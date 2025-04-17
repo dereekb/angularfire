@@ -1,124 +1,156 @@
 {
+  "$schema": "../node_modules/ng-packagr/package.schema.json",
   "name": "@angular/fire",
   "version": "18.2.0",
   "description": "Angular + Firebase = ❤️",
-  "private": true,
-  "scripts": {
-    "test": "npm run build:jasmine && npm run test:node-esm && npm run test:chrome-headless",
-    "test:watch": "npx --yes firebase-tools@latest emulators:exec --project=demo-123 \"ng test --watch=true --browsers=Chrome\"",
-    "test:chrome": "npx --yes firebase-tools@latest emulators:exec --project=demo-123 \"ng test --watch=false --browsers=Chrome\"",
-    "test:firefox": "npx --yes firebase-tools@latest emulators:exec --project=demo-123 \"ng test --watch=false --browsers=Firefox\"",
-    "test:safari": "npx --yes firebase-tools@latest emulators:exec --project=demo-123 \"ng test --watch=false --browsers=SafariNative\"",
-    "test:chrome-headless": "npx --yes firebase-tools@latest emulators:exec --project=demo-123 \"ng test --watch=false --browsers=ChromeHeadless\"",
-    "test:firefox-headless": "npx --yes firebase-tools@latest emulators:exec --project=demo-123 \"ng test --watch=false --browsers=FirefoxHeadless\"",
-    "lint": "ng lint",
-    "lint:fix": "ng lint --fix",
-    "test:node": "node -r tsconfig-paths/register ./dist/out-tsc/jasmine/tools/jasmine.mjs --input-type=commonjs",
-    "test:node-esm": "node -r tsconfig-paths/register ./dist/out-tsc/jasmine/tools/jasmine.mjs",
-    "test:typings": "node ./tools/run-typings-test.js",
-    "test:build": "bash ./test/ng-build/build.sh",
-    "test:all": "npm run test:node-esm && npm run test:chrome-headless && npm run test:typings && npm run test:build",
-    "build": "rimraf dist && tspc -p tsconfig.build.json && node --trace-warnings ./tools/build.js && npm pack ./dist/packages-dist",
-    "buildd": "tsc -p tsconfig.build.json && node --trace-warnings ./tools/build.js && npm pack ./dist/packages-dist",
-    "build:jasmine": "npx tsc -p tsconfig.jasmine.json --module es2015 && cp ./dist/out-tsc/jasmine/tools/jasmine.js ./dist/out-tsc/jasmine/tools/jasmine.mjs && npx tsc -p tsconfig.jasmine.json && cp ./dist/packages-dist/schematics/versions.json ./dist/out-tsc/jasmine/schematics",
-    "changelog": "conventional-changelog -p angular -i CHANGELOG.md -s -r 1"
-  },
-  "husky": {
-    "hooks": {
-      "pre-commit": "npm run lint"
-    }
-  },
-  "schematics": "./dist/packages-dist/collection.json",
-  "builders": "./dist/packages-dist/builders.json",
+  "schematics": "./schematics/collection.json",
+  "builders": "./schematics/builders.json",
   "keywords": [
     "angular",
     "firebase",
-    "rxjs"
+    "rxjs",
+    "angularfire",
+    "angularfire2"
   ],
   "repository": {
     "type": "git",
     "url": "git+https://github.com/angular/angularfire.git"
   },
-  "author": "davideast",
-  "license": "MIT",
   "bugs": {
     "url": "https://github.com/angular/angularfire/issues"
   },
   "homepage": "https://github.com/angular/angularfire#readme",
-  "dependencies": {
-    "@angular-devkit/architect": "~0.1800.0",
-    "@angular-devkit/core": "^18.0.0",
-    "@angular-devkit/schematics": "^18.0.0",
+  "author": "angular,firebase",
+  "license": "MIT",
+  "peerDependencies": {
     "@angular/common": "^18.0.0",
-    "@angular/compiler": "^18.0.0",
     "@angular/core": "^18.0.0",
     "@angular/platform-browser": "^18.0.0",
     "@angular/platform-browser-dynamic": "^18.0.0",
-    "@angular/router": "^18.0.0",
-    "@schematics/angular": "^18.0.0",
-    "esbuild": "^0.24.0",
-    "firebase": "^11.2.0",
-    "firebase-functions": "^6.1.0",
-    "fs-extra": "^8.0.1",
-    "fuzzy": "^0.1.3",
-    "husky": "^4.2.5",
-    "inquirer-autocomplete-prompt": "^1.0.1",
-    "jsonc-parser": "^3.0.0",
-    "open": "^7.0.3 || ^8.0.0",
-    "ora": "^5.3.0",
-    "rxfire": "^6.1.0",
-    "rxjs": "~7.8.0",
-    "semver": "^7.1.3",
-    "triple-beam": "^1.3.0",
-    "tslib": "^2.3.0",
-    "winston": "^3.0.0",
-    "zone.js": "~0.14.0"
-  },
-  "devDependencies": {
-    "@angular-devkit/build-angular": "^18.0.0",
-    "@angular-eslint/builder": "^18.0.0",
-    "@angular-eslint/eslint-plugin": "^18.0.0",
-    "@angular/animations": "^18.0.0",
-    "@angular/cli": "^18.0.0",
-    "@angular/compiler-cli": "^18.0.0",
     "@angular/platform-server": "^18.0.0",
-    "@types/fs-extra": "^7.0.0",
-    "@types/gzip-size": "^5.1.1",
-    "@types/inquirer": "^0.0.44",
-    "@types/jasmine": "^4.3.4",
-    "@types/lodash.isequal": "^4.5.5",
-    "@types/node": "^12.6.2 < 12.12.42",
-    "@types/request": "0.0.30",
-    "@types/semver": "^7.1.0",
-    "@types/triple-beam": "^1.3.0",
-    "@types/winston": "^2.4.4",
-    "@typescript-eslint/eslint-plugin": "^7.11.0",
-    "@typescript-eslint/parser": "^7.11.0",
-    "conventional-changelog-cli": "^1.2.0",
-    "cross-spawn": "^7.0.3",
-    "eslint": "^8.54.0",
-    "eslint-plugin-import": "^2.28.1",
-    "globals": "^13.21.0",
-    "globalthis": "^1.0.1",
-    "jasmine": "^5.0.0",
-    "jasmine-core": "~5.0.0",
-    "karma": "~6.4.0",
-    "karma-chrome-launcher": "~3.1.0",
-    "karma-coverage-istanbul-reporter": "~3.0.2",
-    "karma-firefox-launcher": "^2.1.0",
-    "karma-jasmine": "~5.1.0",
-    "karma-jasmine-html-reporter": "^2.1.0",
-    "karma-safarinative-launcher": "^1.1.0",
-    "ng-packagr": "^18.0.0",
-    "reflect-metadata": "^0.1.2",
-    "replace-in-file": "^5.0.2",
-    "rimraf": "^2.5.4",
-    "shelljs": "^0.8.0",
-    "ts-patch": "^3.2.1",
-    "ts-transformer-keys": "^0.4.4",
-    "tslint": "~6.1.0",
-    "typescript": ">=5.5 <5.6",
-    "yaml": "^2.7.0"
+    "rxjs": "~7.8.0",
+    "firebase-tools": ">=13.0.0 <=15.0.0"
   },
-  "typings": "index.d.ts"
+  "peerDependenciesMeta": {
+    "firebase-tools": {
+      "optional": true
+    },
+    "@angular/platform-server": {
+      "optional": true
+    }
+  },
+  "dependencies": {
+    "firebase": "^11.2.0",
+    "rxfire": "^6.1.0",
+    "@angular-devkit/schematics": "^18.0.0",
+    "@schematics/angular": "^18.0.0",
+    "tslib": "^2.3.0"
+  },
+  "ng-update": {
+    "migrations": "./schematics/migration.json"
+  },
+  "module": "fesm2022/angular-fire.mjs",
+  "typings": "index.d.ts",
+  "exports": {
+    "./package.json": {
+      "default": "./package.json"
+    },
+    ".": {
+      "types": "./index.d.ts",
+      "esm2022": "./esm2022/angular-fire.mjs",
+      "esm": "./esm2022/angular-fire.mjs",
+      "default": "./fesm2022/angular-fire.mjs"
+    },
+    "./analytics": {
+      "types": "./analytics/index.d.ts",
+      "esm2022": "./esm2022/analytics/angular-fire-analytics.mjs",
+      "esm": "./esm2022/analytics/angular-fire-analytics.mjs",
+      "default": "./fesm2022/angular-fire-analytics.mjs"
+    },
+    "./app": {
+      "types": "./app/index.d.ts",
+      "esm2022": "./esm2022/app/angular-fire-app.mjs",
+      "esm": "./esm2022/app/angular-fire-app.mjs",
+      "default": "./fesm2022/angular-fire-app.mjs"
+    },
+    "./auth": {
+      "types": "./auth/index.d.ts",
+      "esm2022": "./esm2022/auth/angular-fire-auth.mjs",
+      "esm": "./esm2022/auth/angular-fire-auth.mjs",
+      "default": "./fesm2022/angular-fire-auth.mjs"
+    },
+    "./app-check": {
+      "types": "./app-check/index.d.ts",
+      "esm2022": "./esm2022/app-check/angular-fire-app-check.mjs",
+      "esm": "./esm2022/app-check/angular-fire-app-check.mjs",
+      "default": "./fesm2022/angular-fire-app-check.mjs"
+    },
+    "./auth-guard": {
+      "types": "./auth-guard/index.d.ts",
+      "esm2022": "./esm2022/auth-guard/angular-fire-auth-guard.mjs",
+      "esm": "./esm2022/auth-guard/angular-fire-auth-guard.mjs",
+      "default": "./fesm2022/angular-fire-auth-guard.mjs"
+    },
+    "./database": {
+      "types": "./database/index.d.ts",
+      "esm2022": "./esm2022/database/angular-fire-database.mjs",
+      "esm": "./esm2022/database/angular-fire-database.mjs",
+      "default": "./fesm2022/angular-fire-database.mjs"
+    },
+    "./data-connect": {
+      "types": "./data-connect/index.d.ts",
+      "esm2022": "./esm2022/data-connect/angular-fire-data-connect.mjs",
+      "esm": "./esm2022/data-connect/angular-fire-data-connect.mjs",
+      "default": "./fesm2022/angular-fire-data-connect.mjs"
+    },
+    "./firestore": {
+      "types": "./firestore/index.d.ts",
+      "esm2022": "./esm2022/firestore/angular-fire-firestore.mjs",
+      "esm": "./esm2022/firestore/angular-fire-firestore.mjs",
+      "default": "./fesm2022/angular-fire-firestore.mjs"
+    },
+    "./functions": {
+      "types": "./functions/index.d.ts",
+      "esm2022": "./esm2022/functions/angular-fire-functions.mjs",
+      "esm": "./esm2022/functions/angular-fire-functions.mjs",
+      "default": "./fesm2022/angular-fire-functions.mjs"
+    },
+    "./messaging": {
+      "types": "./messaging/index.d.ts",
+      "esm2022": "./esm2022/messaging/angular-fire-messaging.mjs",
+      "esm": "./esm2022/messaging/angular-fire-messaging.mjs",
+      "default": "./fesm2022/angular-fire-messaging.mjs"
+    },
+    "./performance": {
+      "types": "./performance/index.d.ts",
+      "esm2022": "./esm2022/performance/angular-fire-performance.mjs",
+      "esm": "./esm2022/performance/angular-fire-performance.mjs",
+      "default": "./fesm2022/angular-fire-performance.mjs"
+    },
+    "./remote-config": {
+      "types": "./remote-config/index.d.ts",
+      "esm2022": "./esm2022/remote-config/angular-fire-remote-config.mjs",
+      "esm": "./esm2022/remote-config/angular-fire-remote-config.mjs",
+      "default": "./fesm2022/angular-fire-remote-config.mjs"
+    },
+    "./storage": {
+      "types": "./storage/index.d.ts",
+      "esm2022": "./esm2022/storage/angular-fire-storage.mjs",
+      "esm": "./esm2022/storage/angular-fire-storage.mjs",
+      "default": "./fesm2022/angular-fire-storage.mjs"
+    },
+    "./vertexai": {
+      "types": "./vertexai/index.d.ts",
+      "esm2022": "./esm2022/vertexai/angular-fire-vertexai.mjs",
+      "esm": "./esm2022/vertexai/angular-fire-vertexai.mjs",
+      "default": "./fesm2022/angular-fire-vertexai.mjs"
+    },
+    "./firestore/lite": {
+      "types": "./firestore/lite/index.d.ts",
+      "esm2022": "./esm2022/firestore/lite/angular-fire-firestore-lite.mjs",
+      "esm": "./esm2022/firestore/lite/angular-fire-firestore-lite.mjs",
+      "default": "./fesm2022/angular-fire-firestore-lite.mjs"
+    }
+  },
+  "sideEffects": false
 }
