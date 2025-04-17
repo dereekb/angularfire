@@ -1,6 +1,5 @@
 import { Injector } from '@angular/core';
-import { pendingUntilEvent } from '@angular/core/rxjs-interop';
-import { ɵAngularFireSchedulers } from '@angular/fire';
+import { pendingUntilEvent, ɵAngularFireSchedulers } from '@angular/fire';
 import { Observable, from, of } from 'rxjs';
 import { observeOn, switchMap } from 'rxjs/operators';
 import { ListOptions, ListResult, Reference, SettableMetadata, StringFormat, UploadMetadata } from './interfaces';

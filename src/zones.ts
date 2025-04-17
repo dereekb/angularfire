@@ -1,15 +1,17 @@
 /* eslint-disable @typescript-eslint/ban-ts-comment */
 import {
   EnvironmentInjector,
+  ExperimentalPendingTasks,
   Injectable,
+  Injector,
   NgZone,
-  PendingTasks,
+  assertInInjectionContext,
   inject,
   isDevMode,
   runInInjectionContext
 } from '@angular/core';
-import { pendingUntilEvent } from '@angular/core/rxjs-interop';
 import {
+  MonoTypeOperatorFunction,
   Observable,
   SchedulerAction,
   SchedulerLike,
@@ -18,11 +20,12 @@ import {
   queueScheduler
 } from 'rxjs';
 import { observeOn, subscribeOn } from 'rxjs/operators';
+import { pendingUntilEvent, runPendingTask } from './pendingtasks';
 
-declare const Zone: {current: unknown} | undefined;
+declare const Zone: { current: unknown } | undefined;
 
 export enum LogLevel {
-  "SILENT" = 0, 
+  "SILENT" = 0,
   "WARN" = 1,
   "VERBOSE" = 2,
 }
@@ -47,7 +50,7 @@ export class ɵZoneScheduler implements SchedulerLike {
     const targetZone = this.zone;
     // Wrap the specified work function to make sure that if nested scheduling takes place the
     // work is executed in the correct zone
-    const workInZone = function(this: SchedulerAction<any>, state: any) {
+    const workInZone = function (this: SchedulerAction<any>, state: any) {
       if (targetZone) {
         targetZone.runGuarded(() => {
           work.apply(this, [state]);
@@ -98,13 +101,13 @@ function warnOutsideInjectionContext(original: any, logLevel: LogLevel) {
 
 function runOutsideAngular<T>(fn: (...args: any[]) => T): T {
   const ngZone = inject(NgZone, { optional: true });
-  if (!ngZone) {return fn();}
+  if (!ngZone) { return fn(); }
   return ngZone.runOutsideAngular(() => fn());
 }
 
 function run<T>(fn: (...args: any[]) => T): T {
   const ngZone = inject(NgZone, { optional: true });
-  if (!ngZone) {return fn();}
+  if (!ngZone) { return fn(); }
   return ngZone.run(() => fn());
 }
 
@@ -121,20 +124,21 @@ const zoneWrapFn = (
   };
 };
 
-export const ɵzoneWrap = <T= unknown>(it: T, blockUntilFirst: boolean, logLevel?: LogLevel): T => {
+export const ɵzoneWrap = <T = unknown>(it: T, blockUntilFirst: boolean, logLevel?: LogLevel): T => {
   logLevel ||= blockUntilFirst ? LogLevel.WARN : LogLevel.VERBOSE;
   // function() is needed for the arguments object
   return function () {
     let taskDone: VoidFunction | undefined;
     const _arguments = arguments;
     let schedulers: ɵAngularFireSchedulers;
-    let pendingTasks: PendingTasks;
+    let pendingTasks: ExperimentalPendingTasks;
     let injector: EnvironmentInjector;
+
     try {
       schedulers = inject(ɵAngularFireSchedulers);
-      pendingTasks = inject(PendingTasks);
+      pendingTasks = inject(ExperimentalPendingTasks);
       injector = inject(EnvironmentInjector);
-    } catch(e) {
+    } catch (e) {
       warnOutsideInjectionContext(it, logLevel);
       return (it as any).apply(this, _arguments);
     }
@@ -171,11 +175,11 @@ export const ɵzoneWrap = <T= unknown>(it: T, blockUntilFirst: boolean, logLevel
       return run(
         () =>
           new Promise((resolve, reject) => {
-            pendingTasks.run(() => ret).then(
+            runPendingTask(pendingTasks, () => ret).then(
               (it) => runInInjectionContext(injector, () => run(() => resolve(it))),
               (reason) => runInInjectionContext(injector, () => run(() => reject(reason)))
             );
-      }));
+          }));
     } else if (typeof ret === 'function' && taskDone) {
       // Handle unsubscribe
       // function() is needed for the arguments object

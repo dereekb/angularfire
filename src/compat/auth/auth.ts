@@ -1,7 +1,6 @@
 import { isPlatformServer } from '@angular/common';
 import { EnvironmentInjector, Inject, Injectable, InjectionToken, NgZone, Optional, PLATFORM_ID, inject } from '@angular/core';
-import { pendingUntilEvent } from '@angular/core/rxjs-interop';
-import { ɵAngularFireSchedulers } from '@angular/fire';
+import { pendingUntilEvent, ɵAngularFireSchedulers } from '@angular/fire';
 import { AppCheckInstances } from '@angular/fire/app-check';
 import { ɵPromiseProxy, ɵapplyMixins, ɵlazySDKProxy } from '@angular/fire/compat';
 import { FIREBASE_APP_NAME, FIREBASE_OPTIONS, FirebaseApp, ɵcacheInstance, ɵfirebaseAppFactory } from '@angular/fire/compat';
@@ -177,7 +176,7 @@ export class AngularFireAuth {
       ).pipe(
         // handle the { user: { } } when a user is already logged in, rather have null
         // TODO handle the type corcersion better
-        map(credential => credential?.user ? credential as Required<firebase.auth.UserCredential> : null),
+        map(credential => (credential as any)?.user ? credential as Required<firebase.auth.UserCredential> : null),
         subscribeOn(schedulers.outsideAngular),
         observeOn(schedulers.insideAngular),
       );

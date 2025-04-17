@@ -1,6 +1,5 @@
 import { EnvironmentInjector, Inject, Injectable, InjectionToken, NgZone, Optional, PLATFORM_ID, inject } from '@angular/core';
-import { pendingUntilEvent } from '@angular/core/rxjs-interop';
-import { ɵAngularFireSchedulers } from '@angular/fire';
+import { pendingUntilEvent, ɵAngularFireSchedulers } from '@angular/fire';
 import { ɵPromiseProxy, ɵapplyMixins, ɵlazySDKProxy } from '@angular/fire/compat';
 import { FIREBASE_APP_NAME, FIREBASE_OPTIONS, ɵcacheInstance, ɵfirebaseAppFactory } from '@angular/fire/compat';
 import { FirebaseOptions } from 'firebase/app';

@@ -3,8 +3,10 @@ export * from 'firebase/vertexai';
 import { ɵzoneWrap } from '@angular/fire';
 import {
   getGenerativeModel as _getGenerativeModel,
+  getImagenModel as _getImagenModel,
   getVertexAI as _getVertexAI
 } from 'firebase/vertexai';
 
 export const getGenerativeModel = ɵzoneWrap(_getGenerativeModel, true);
+export const getImagenModel = ɵzoneWrap(_getImagenModel, true);
 export const getVertexAI = ɵzoneWrap(_getVertexAI, true);

@@ -1,5 +1,5 @@
 import { Injector, NgZone, inject } from '@angular/core';
-import { pendingUntilEvent } from '@angular/core/rxjs-interop';
+import { pendingUntilEvent } from '@angular/fire';
 import type { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { AngularFireDatabase } from '../database';

@@ -1,5 +1,5 @@
 import { Injector } from '@angular/core';
-import { pendingUntilEvent } from '@angular/core/rxjs-interop';
+import { pendingUntilEvent } from '@angular/fire';
 import { map } from 'rxjs/operators';
 import { AngularFireDatabase } from '../database';
 import { AngularFireObject, DatabaseQuery } from '../interfaces';

@@ -35,7 +35,7 @@ export class AngularFireMessaging {
     @Inject(PLATFORM_ID) platformId: Object,
     zone: NgZone,
     schedulers: ɵAngularFireSchedulers,
-    @Optional() @Inject(VAPID_KEY) vapidKey: string|null,
+    @Optional() @Inject(VAPID_KEY) vapidKey: string | null,
     @Optional() @Inject(SERVICE_WORKER) _serviceWorker: any,
   ) {
     const serviceWorker: Promise<ServiceWorkerRegistration> | null = _serviceWorker;
@@ -73,9 +73,9 @@ export class AngularFireMessaging {
       })
     );
 
-    const notificationPermission$ = new Observable<string>(emitter => {
+    const notificationPermission$ = new Observable<string>((emitter) => {
       navigator.permissions.query({ name: 'notifications' }).then(notificationPerm => {
-        notificationPerm.onchange = () => emitter.next();
+        notificationPerm.onchange = () => emitter.next(undefined as any);
       });
     });
 

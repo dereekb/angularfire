@@ -1,5 +1,5 @@
 import { EnvironmentInjector, inject } from '@angular/core';
-import { pendingUntilEvent } from '@angular/core/rxjs-interop';
+import { pendingUntilEvent } from '@angular/fire';
 import firebase from 'firebase/compat/app';
 import { Observable, from } from 'rxjs';
 import { filter, map, pairwise, scan, startWith } from 'rxjs/operators';
